@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce - Fernando Suarez</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+    <div class="container-all">
+        <div class="container">
+            <div id="hidden" class="form-group">
+                <img id="FotoPerfil" src="img/perfil-de-usuario.webp" alt="Profile Image">
+                <h1>Sign In</h1>
+                <form action="#">
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <input type="text" name="name" placeholder="Name" required>
+                    <input type="file" name="profileImage" accept="image/*" onchange="previewImage(event)" required>
+                    <button class="btnclass">Sign In</button>
+                </form>
+                <div class="switch-button">
+                    <button id="sing">Switch to Log In</button>
+                </div>
+            </div>
+            <div id="Login" class="form-group flipped">
+                <h1>Log In</h1>
+                <form action="productos.html">
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <button class="btnclass">Log In</button>
+                </form>
+                <div class="switch-button">
+                    <button id="log">Switch to Sign In</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/javascript/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+        const Log = document.getElementById("Login");
+        const Sing = document.getElementById("hidden");
+        const btnLog = document.getElementById("log");
+        const btnSing = document.getElementById("sing");
+        let animacion = false;
+
+        function switchDivs(fromDiv, toDiv) {
+            fromDiv.style.transform = "rotateY(180deg)";
+            fromDiv.style.opacity = 0;
+
+            setTimeout(() => {
+                fromDiv.style.display = "none";
+                fromDiv.style.transform = "rotateY(0)";
+                fromDiv.style.opacity = 1;
+
+                toDiv.style.display = "block";
+                toDiv.style.transform = "rotateY(180deg)";
+                toDiv.style.opacity = 0;
+
+                setTimeout(() => {
+                    toDiv.style.transform = "rotateY(0)";
+                    toDiv.style.opacity = 1;
+                    animacion = false;
+                }, 300);
+            }, 300);
+        }
+
+        btnLog.addEventListener("click", () => {
+            if (!animacion) {
+                animacion = true;
+                switchDivs(Log, Sing);
+            }
+        });
+
+        btnSing.addEventListener("click", () => {
+            if (!animacion) {
+                animacion = true;
+                switchDivs(Sing, Log);
+            }
+        });
+    </script>
+</body>
+
+</html>

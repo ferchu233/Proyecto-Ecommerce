@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-profile img {
+            display: flex;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        main {
+            margin-left: 5%;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-top: 70px;
+            padding: 0;
+        }
+
+        .stock-control table {
+            margin-left: 5%;
+            border-collapse: collapse;
+            width: 90%;
+        }
+
+        .stock-control th, .stock-control td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .stock-control th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .image-product img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .action-btn {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-right: 5px;
+            border-radius: 5px;
+        }
+
+        .action-btn:hover {
+            background-color: #555;
+        }
+
+        .boton-add{
+            align-items: end;
+        }
+
+        .boton-add {
+            text-align: right;
+            margin-right: 50px;
+            margin-top: 10px;
+        }
+
+
+        .sales-graph {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        @media only screen and (max-width: 600px) {
+            .stock-control th, .stock-control td {
+                font-size: 12px;
+            }
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+        }
+
+        
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1001;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s;
+        }
+
+        .fade-out {
+            animation: fadeOut 0.3s;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <div class="user-profile">
+            <img src="img/perfil-de-usuario.webp" alt="">
+            <h2>Fernando Suarez</h2>
+        </div>
+    </header>
+    <main class="admin-main">
+        
+        <section class="stock-control">
+            
+            <table>
+                <div class="boton-add">
+                    <button class="action-btn">add</button>
+                </div>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Total sales</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="image-product"><img src="img/ES1grRfXkAAr_OH.jpg_large" alt=""></td>
+                        <td>Auto</td>
+                        <td>U$U 20000</td>
+                        <td>3</td>
+                        <td>1</td>
+                        <td class="actions">
+                            <button class="action-btn update-btn">Update</button>
+                            <button class="action-btn">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="sales-graph">
+            <!-- aquí puedes agregar el contenido de tu gráfico de ventas -->
+        </section>
+
+
+        <div class="overlay add-overlay"></div>
+        <div class="popup add-popup">
+            <button class="close-button">Close</button>
+           
+        </div>
+
+        
+        <div class="overlay update-overlay"></div>
+        <div class="popup update-popup">
+            <button class="close-button">Close</button>
+           
+        </div>
+
+        <script>
+            const addButton = document.querySelector('.boton-add button');
+            const updateButtons = document.querySelectorAll('.update-btn');
+            const addPopup = document.querySelector('.add-popup');
+            const updatePopup = document.querySelector('.update-popup');
+            const addOverlay = document.querySelector('.add-overlay');
+            const updateOverlay = document.querySelector('.update-overlay');
+            const closeButton = document.querySelectorAll('.popup .close-button');
+
+            addButton.addEventListener('click', () => {
+                addPopup.classList.add('fade-in');
+                addOverlay.classList.add('fade-in');
+                addPopup.style.display = 'block';
+                addOverlay.style.display = 'block';
+            });
+
+            updateButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    updatePopup.classList.add('fade-in');
+                    updateOverlay.classList.add('fade-in');
+                    updatePopup.style.display = 'block';
+                    updateOverlay.style.display = 'block';
+                });
+            });
+
+            closeButton.forEach(button => {
+                button.addEventListener('click', () => {
+                    addPopup.classList.remove('fade-in');
+                    updatePopup.classList.remove('fade-in');
+                    addOverlay.classList.remove('fade-in');
+                    updateOverlay.classList.remove('fade-in');
+                    addPopup.classList.add('fade-out');
+                    updatePopup.classList.add('fade-out');
+                    addOverlay.classList.add('fade-out');
+                    updateOverlay.classList.add('fade-out');
+                    setTimeout(() => {
+                        addPopup.style.display = 'none';
+                        updatePopup.style.display = 'none';
+                        addOverlay.style.display = 'none';
+                        updateOverlay.style.display = 'none';
+                        addPopup.classList.remove('fade-out');
+                        updatePopup.classList.remove('fade-out');
+                        addOverlay.classList.remove('fade-out');
+                        updateOverlay.classList.remove('fade-out');
+                    }, 300);
+                });
+            });
+        </script>
+    </body>
+</html>
