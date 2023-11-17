@@ -1,3 +1,4 @@
+
 $('.button').click(function () {
     var buttonId = $(this).attr('id');
     $('#update-user').removeAttr('class').addClass(buttonId);
